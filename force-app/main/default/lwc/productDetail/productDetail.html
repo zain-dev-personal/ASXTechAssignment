@@ -1,0 +1,61 @@
+<template>
+    <lightning-card title="Product Details" icon-name="standard:product">
+        <div class="slds-p-around_medium">
+            <template if:true={productId}>
+                <!-- Product Image -->
+                <template if:true={imageUrl}>
+                    <div class="slds-m-bottom_medium slds-p-left_small">
+                        <img src={imageUrl} alt="Product Image" style="max-height: 200px; width: auto; border-radius: 8px; border: 1px solid #ddd;"/>
+                    </div>
+                </template>
+                <!-- Product Information -->
+                <lightning-record-view-form record-id={productId} object-api-name="Product__c">
+                    <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-output-field field-name="Name"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-output-field field-name="Category__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-output-field field-name="Unit_Price__c"></lightning-output-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <div class="slds-form-element slds-m-top_xxx-small">
+                                <span class="slds-form-element__label slds-text-color_weak">Active</span>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-form-element__static slds-border_none slds-p-left_none">
+                                        <template if:true={isActive}>
+                                            <lightning-icon icon-name="utility:check" variant="success" size="x-small"></lightning-icon>
+                                        </template>
+                                        <template if:false={isActive}>
+                                            <lightning-icon icon-name="utility:close" variant="error" size="x-small"></lightning-icon>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-m-top_small">
+                            <lightning-output-field field-name="Description__c"></lightning-output-field>
+                        </div>
+                    </div>
+                </lightning-record-view-form>
+
+                <!-- Child Component: Price History -->
+                <div class="slds-m-top_large">
+                    <c-product-price-history product-id={productId}></c-product-price-history>
+                </div>
+            </template>
+            
+            <template if:false={productId}>
+                <div class="slds-illustration slds-illustration_small slds-m-top_large slds-m-bottom_large">
+                    <img src="/img/chatter/OpenRoad.svg" class="slds-illustration__svg" alt="Select a product"/>
+                    <div class="slds-text-longform">
+                        <h3 class="slds-text-heading_medium">Select a Product</h3>
+                        <p class="slds-text-body_regular">Click "View Detail" on any product in the catalogue to see its information and price history.</p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

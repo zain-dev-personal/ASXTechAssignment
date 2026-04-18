@@ -1,0 +1,27 @@
+<template>
+    <div class="slds-section slds-is-open slds-m-top_small">
+        <h3 class="slds-section__title slds-theme_shade slds-m-bottom_small">
+            <span class="slds-truncate slds-p-horizontal_small" title="Price History">
+                <lightning-icon icon-name="standard:currency" size="small" class="slds-m-right_small"></lightning-icon>
+                Price History
+            </span>
+        </h3>
+        <div aria-hidden="false" class="slds-section__content slds-p-horizontal_small">
+            <template if:true={hasHistories}>
+                <div class="slds-scrollable_y slds-border_all" style="max-height: 250px; border-radius: 4px;">
+                    <lightning-datatable
+                        key-field="Id"
+                        data={histories}
+                        columns={columns}
+                        hide-checkbox-column="true">
+                    </lightning-datatable>
+                </div>
+            </template>
+            <template if:false={hasHistories}>
+                <div class="slds-p-around_medium slds-text-align_center slds-text-color_weak slds-bg-color_default slds-border_all" style="border-radius: 4px;">
+                    <p>No price changes recorded yet.</p>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

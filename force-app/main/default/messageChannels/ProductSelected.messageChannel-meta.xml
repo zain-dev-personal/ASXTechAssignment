@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Broadcasts when a product is selected in the catalogue to any listening details or child components.</description>
+    <isExposed>true</isExposed>
+    <lightningMessageFields>
+        <description>The Salesforce Id of the selected Product__c record.</description>
+        <fieldName>productId</fieldName>
+    </lightningMessageFields>
+    <lightningMessageFields>
+        <description>Optional command token, such as 'refresh'.</description>
+        <fieldName>action</fieldName>
+    </lightningMessageFields>
+    <masterLabel>ProductSelected</masterLabel>
+</LightningMessageChannel>
