@@ -1,10 +1,5 @@
 public with sharing class ProductTriggerHandler {
     
-    /**
-     * @description Handles the after update event to track price changes.
-     * @param newMap Map of new product records.
-     * @param oldMap Map of old product records.
-     */
     public static void handleAfterUpdate(Map<Id, Product__c> newMap, Map<Id, Product__c> oldMap) {
         List<Price_History__c> historiesToInsert = new List<Price_History__c>();
         

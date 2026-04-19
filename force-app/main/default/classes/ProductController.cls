@@ -2,11 +2,11 @@ public with sharing class ProductController {
     
     /**
      * @description Fetches active products, optionally filtered by category.
-     * @param categoryFilter Optional category name to filter by.
+     * @param categoryValue Optional category name to filter by.
      * @return List of Product__c records.
      */
     @AuraEnabled(cacheable=true)
-    public static List<Product__c> getProducts(String categoryFilter, Boolean includeInactive) {
+    public static List<Product__c> getProducts(String categoryValue, Boolean includeInactive) {
         String query = 'SELECT Id, Name, Category__c, Unit_Price__c, Active__c, Description__c, Product_Image_Id__c FROM Product__c';
         
         List<String> conditions = new List<String>();
@@ -15,8 +15,8 @@ public with sharing class ProductController {
             conditions.add('Active__c = true');
         }
         
-        if (String.isNotBlank(categoryFilter)) {
-            conditions.add('Category__c = :categoryFilter');
+        if (String.isNotBlank(categoryValue)) {
+            conditions.add('Category__c = :categoryValue');
         }
         
         if (!conditions.isEmpty()) {
