@@ -18,22 +18,22 @@ import { updateRecord } from 'lightning/uiRecordApi';
 const COLUMNS = [
     { label: 'Name', fieldName: 'Name', sortable: true },
     { label: 'Category', fieldName: 'Category__c' },
-    { 
-        label: 'Price', 
-        fieldName: 'Unit_Price__c', 
-        type: 'currency', 
+    {
+        label: 'Price',
+        fieldName: 'Unit_Price__c',
+        type: 'currency',
         sortable: true,
-        typeAttributes: { currencyCode: 'AUD', step: '0.01' } 
+        typeAttributes: { currencyCode: 'AUD', step: '0.01' }
     },
-    { 
-        label: 'Active', 
+    {
+        label: 'Active',
         type: 'inlineToggle',
         typeAttributes: {
             recordId: { fieldName: 'Id' },
             checked: { fieldName: 'Active__c' }
         }
     },
-    { 
+    {
         type: 'button-icon',
         initialWidth: 50,
         typeAttributes: {
@@ -44,7 +44,7 @@ const COLUMNS = [
             alternativeText: 'View'
         }
     },
-    { 
+    {
         type: 'button-icon',
         initialWidth: 50,
         typeAttributes: {
@@ -55,7 +55,7 @@ const COLUMNS = [
             alternativeText: 'Edit'
         }
     },
-    { 
+    {
         type: 'button-icon',
         initialWidth: 50,
         typeAttributes: {
@@ -76,7 +76,7 @@ export default class ProductCatalogue extends LightningElement {
     @track viewMode = 'list'; // 'list' or 'card'
     @track sortBy = 'Name';
     @track sortDirection = 'asc';
-    
+
     @track isEditing = false;
     @track isCreating = false;
     @track isCreatingStep2 = false;
@@ -99,7 +99,7 @@ export default class ProductCatalogue extends LightningElement {
     productMetadata;
 
     @wire(getPicklistValues, {
-        recordTypeId: '$productMetadata.data.defaultRecordTypeId', 
+        recordTypeId: '$productMetadata.data.defaultRecordTypeId',
         fieldApiName: CATEGORY_FIELD
     })
     wiredCategoryValues({ error, data }) {
@@ -113,7 +113,7 @@ export default class ProductCatalogue extends LightningElement {
         }
     }
 
-    @wire(getProducts, { categoryFilter: '$selectedCategory', includeInactive: '$includeInactive' })
+    @wire(getProducts, { categoryValue: '$selectedCategory', includeInactive: '$includeInactive' })
     wiredProducts(result) {
         this.wiredProductsResult = result;
         const { data, error } = result;
@@ -177,7 +177,7 @@ export default class ProductCatalogue extends LightningElement {
     handleCardAction(event) {
         const action = event.currentTarget.dataset.action;
         const recordId = event.currentTarget.dataset.id;
-        
+
         if (action === 'view') {
             this.publishSelectedProduct(recordId);
         } else if (action === 'edit') {
@@ -201,7 +201,7 @@ export default class ProductCatalogue extends LightningElement {
         const savedRecordId = this.editRecordId;
         this.showToast('Success', 'Product updated successfully', 'success');
         this.closeEditModal();
-        notifyRecordUpdateAvailable([{recordId: savedRecordId}]);
+        notifyRecordUpdateAvailable([{ recordId: savedRecordId }]);
         publish(this.messageContext, PRODUCT_SELECTED_CHANNEL, { productId: savedRecordId, action: 'refresh' });
         return refreshApex(this.wiredProductsResult);
     }
@@ -223,7 +223,7 @@ export default class ProductCatalogue extends LightningElement {
 
     handleCreateSuccess(event) {
         this.showToast('Success', 'Product details saved. Now upload an image.', 'success');
-        this.editRecordId = event.detail.id; 
+        this.editRecordId = event.detail.id;
         this.isCreatingStep2 = true;
     }
 
@@ -240,7 +240,7 @@ export default class ProductCatalogue extends LightningElement {
             updateRecord(recordInput)
                 .then(() => {
                     this.showToast('Success', 'Image saved to product', 'success');
-                    notifyRecordUpdateAvailable([{recordId: this.editRecordId}]);
+                    notifyRecordUpdateAvailable([{ recordId: this.editRecordId }]);
                     this.closeCreateModal();
                 })
                 .catch(error => {
@@ -262,7 +262,7 @@ export default class ProductCatalogue extends LightningElement {
             updateRecord(recordInput)
                 .then(() => {
                     this.showToast('Success', 'Image uploaded and linked successfully', 'success');
-                    notifyRecordUpdateAvailable([{recordId: this.editRecordId}]);
+                    notifyRecordUpdateAvailable([{ recordId: this.editRecordId }]);
                     return refreshApex(this.wiredProductsResult);
                 })
                 .catch(error => {
@@ -306,7 +306,7 @@ export default class ProductCatalogue extends LightningElement {
         updateProductStatus({ productId, isActive: newStatus })
             .then(() => {
                 this.showToast('Success', 'Product status updated', 'success');
-                notifyRecordUpdateAvailable([{recordId: productId}]);
+                notifyRecordUpdateAvailable([{ recordId: productId }]);
                 return refreshApex(this.wiredProductsResult);
             })
             .catch(error => {
